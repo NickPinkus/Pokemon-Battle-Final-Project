@@ -11,7 +11,7 @@ public:
 	Monster();
 	~Monster();
 
-	Attacks Attack1 = Attacks("Default", 0);
+	Attacks Attack1 = Attacks ("Default", 0);
 	Attacks Attack2 = Attacks ("Default", 0);
 
 	int Health;

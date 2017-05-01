@@ -36,7 +36,7 @@ void NewGame()
 
 	cout << "Oak: Hello, welcome to the world of Pokemon!"        << endl
 		 << "My name is Oak! People call me a Pokemon Professor!" << endl
-		 << "What about you? What is your name?"                  << endl
+		 << "What about you? What is your name?\n\n"
 		 << "Name: ";
 
 	NameSet = nameValidate();
@@ -46,11 +46,15 @@ void NewGame()
 	cout << "\nOak: " << Player.GetName() << ", huh? That's a cool name!\n\n";
 	system("pause");
 	system("cls");
-	cout << "Oak: Ah! I see you came here with my grandson! What was his name again?" << endl
+	cout << "Oak: Ah! I see you came here with my grandson! What was his name again?\n\n"
 		 << "Name: ";
 
 	NameSet = nameValidate();
 	Trainer Opponent = Trainer(NameSet);
+
+	cout << "Oak: Oh, that's right! His name is " << Opponent.GetName() << "!\n\n";
+
+	system("pause");
 	system("cls");
 
 	cout << "Oak: " << Player.GetName() << "! I have three Pokemon here!" << endl
@@ -93,8 +97,8 @@ void NewGame()
 
 
 	cout << "\n\n" << Player.GetName() << " chose " << Player.Pokemon.GetName() << "!" << endl;
-	cout << "\n\n" << Opponent.GetName() << ": Then I'll choose this one!"             << endl;
-	cout << Opponent.GetName() << " chose " << Opponent.Pokemon.GetName() << "!"       << endl;
+	cout << "\n\n" << Opponent.GetName() << ": Then I'll choose this one!\n\n";
+	cout << Opponent.GetName() << " chose " << Opponent.Pokemon.GetName() << "!\n\n";
 	
 	system("pause");
 	system("cls");
@@ -120,7 +124,7 @@ bool Battle(Trainer Player, Trainer Opponent)
 
 	getchar();
 
-	cout << "Go! " << Player.Pokemon.GetName() << "!" << endl;
+	cout << "Go! " << Player.Pokemon.GetName() << "!\n\n";
 
 	system("pause");
 	system("cls");
@@ -149,7 +153,7 @@ bool Battle(Trainer Player, Trainer Opponent)
 			cout <<  Player.Pokemon.GetName() << "'s attacks:" << endl
 				 << "(1)" << Player.Pokemon.Attack1.GetAttackName()     << endl
 				 << "(2)" << Player.Pokemon.Attack2.GetAttackName()     << endl
-				 << "Your Choice: ";
+				 << "Your Choice: \n";
 			cin  >> playerchoice;
 
 			if (playerchoice == 1)
