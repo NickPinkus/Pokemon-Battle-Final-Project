@@ -1,14 +1,27 @@
 #include <iostream>
+#include <memory>
 #include "Trainer.h"
 
 string nameValidate();
 
 void NewGame();
-bool Battle(Trainer Player, Trainer Opponent);
+void Battle(Trainer Player, Trainer Opponent);
+bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
 
 int main()
 {
-	NewGame();
+	cout << "Pokemon: CMD Version\n\n" << "Please choose an option:\n\n" << "N- New Game\n" << "L- Load Game\n" << "E- Exit";
+
+	char playerChoice = 'z';
+	cin >> playerChoice;
+	playerChoice = toupper(playerChoice);
+
+	switch (playerChoice)
+	{
+	case 'N': system("cls"); NewGame(); break;
+	case 'L': cout << "Implement This"; break;
+	case 'E': return 0;
+	}
 
 	system("pause");
 
@@ -21,7 +34,7 @@ string nameValidate()
 	getline(cin, setname);
 	while (setname.empty())
 	{
-		cout << "Oak: I may be old, but I'm pretty sure that isn't a name..." << endl;
+		cout << "Oak: Hey, look. I'm old. You're going to need to speak up." << endl;
 		getline(cin, setname);
 	}
 
@@ -39,6 +52,7 @@ void NewGame()
 		 << "What about you? What is your name?\n\n"
 		 << "Name: ";
 
+	cin.ignore();
 	NameSet = nameValidate();
 
 	Trainer Player = Trainer(NameSet);
@@ -108,36 +122,42 @@ void NewGame()
 	getchar();
 
 	Battle(Player, Opponent);
+
+	system("cls");
+
 	
 }
 
-bool Battle(Trainer Player, Trainer Opponent)
+void Battle(Trainer Player, Trainer Opponent)
 {
 	int playerchoice;
+	auto playerPTR = make_shared<Trainer>(Player);
+	auto opponentPTR = make_shared<Trainer>(Opponent);
+
 	srand(time(NULL));
 
 	cin.ignore();
 
-	cout << "Trainer " << Opponent.GetName() << " challenges Trainer " << Player.GetName() << " to a battle!\n\n";
+	cout << "Trainer " << opponentPTR->GetName() << " challenges Trainer " << Player.GetName() << " to a battle!\n\n";
 	getchar();
-	cout << Opponent.GetName() << " sends out " << Opponent.Pokemon.GetName() << "!" << endl;
+	cout << "Trainer " << opponentPTR->GetName() << " sends out " << Opponent.Pokemon.GetName() << "!" << endl;
 
 	getchar();
 
-	cout << "Go! " << Player.Pokemon.GetName() << "!\n\n";
+	cout << "Go! " << playerPTR->Pokemon.GetName() << "!\n\n";
 
 	system("pause");
 	system("cls");
 
-	while (Player.Pokemon.Health > 0 && Opponent.Pokemon.Health > 0)
+	while (playerPTR->Pokemon.Health > 0 && playerPTR->Pokemon.Health > 0)
 	{
-		cout << Opponent.Pokemon.GetName() << endl
-			 << "Health: " << Opponent.Pokemon.Health
-			 << "/" << Opponent.Pokemon.GetMaxHealth() << "\n\n";
+		cout << opponentPTR->Pokemon.GetName() << endl
+			 << "Health: " << opponentPTR->Pokemon.Health
+			 << "/" << opponentPTR->Pokemon.GetMaxHealth() << "\n\n";
 
-		cout << Player.Pokemon.GetName() << endl
-			 << "Health: " << Player.Pokemon.Health
-			 << "/" << Player.Pokemon.GetMaxHealth() << "\n\n";
+		cout << playerPTR->Pokemon.GetName() << endl
+			 << "Health: " << playerPTR->Pokemon.Health
+			 << "/" << playerPTR->Pokemon.GetMaxHealth() << "\n\n";
 
 	//Start Player's Turn
 
@@ -150,33 +170,33 @@ bool Battle(Trainer Player, Trainer Opponent)
 		switch (playerchoice)
 		{
 		case 1:
-			cout <<  Player.Pokemon.GetName() << "'s attacks:" << endl
-				 << "(1)" << Player.Pokemon.Attack1.GetAttackName()     << endl
-				 << "(2)" << Player.Pokemon.Attack2.GetAttackName()     << endl
+			cout << playerPTR->Pokemon.GetName() << "'s attacks:" << endl
+				 << "(1)" << playerPTR->Pokemon.Attack1.GetAttackName()     << endl
+				 << "(2)" << playerPTR->Pokemon.Attack2.GetAttackName()     << endl
 				 << "Your Choice: \n";
 			cin  >> playerchoice;
 
 			if (playerchoice == 1)
 			{
-				cout << Player.Pokemon.GetName() << " used " << Player.Pokemon.Attack1.GetAttackName() << "!";
-				Opponent.Pokemon.Health -= Player.Pokemon.Attack1.calculateAttackDamage();
+				cout << playerPTR->Pokemon.GetName() << " used " << playerPTR->Pokemon.Attack1.GetAttackName() << "!";
+				opponentPTR->Pokemon.Health -= playerPTR->Pokemon.Attack1.calculateAttackDamage();
 			}
 			else
 			{
-				cout << Player.Pokemon.GetName() << " used " << Player.Pokemon.Attack2.GetAttackName() << "!";
-				Opponent.Pokemon.Health -= Player.Pokemon.Attack2.calculateAttackDamage();
+				cout << playerPTR->Pokemon.GetName() << " used " << playerPTR->Pokemon.Attack2.GetAttackName() << "!";
+				opponentPTR->Pokemon.Health -= playerPTR->Pokemon.Attack2.calculateAttackDamage();
 			}
 
 			break;
 
 		case 2:
 			int counter = 1;
-			for (int i = 0; i < sizeof(Player.Inventory)/sizeof(*Player.Inventory); i++)
+			for (int i = 0; i < sizeof(playerPTR->Inventory)/sizeof(*playerPTR->Inventory); i++)
 			{
-				if (Player.Inventory[i].GetItemCount() > 0)
+				if (playerPTR->Inventory[i].GetItemCount() > 0)
 				{
-					cout << "(" << counter << ") " << Player.Inventory[i].GetItemName()
-						 << " x" << Player.Inventory[i].GetItemCount() << endl;
+					cout << "(" << counter << ") " << playerPTR->Inventory[i].GetItemName()
+						 << " x" << playerPTR->Inventory[i].GetItemCount() << endl;
 					counter++;
 				}
 			}
@@ -184,40 +204,49 @@ bool Battle(Trainer Player, Trainer Opponent)
 			switch (playerchoice)
 			{
 			case 1:
-				if (Player.Inventory[0].GetItemCount() > 0 && Player.Pokemon.Health + 5 <= Player.Pokemon.GetMaxHealth())
+				if (playerPTR->Inventory[0].GetItemCount() > 0 && playerPTR->Pokemon.Health + 5 <= playerPTR->Pokemon.GetMaxHealth())
 				{
-					Player.Inventory[0].UseItem();
-					Player.Pokemon.Health += 5;
-					cout << Player.GetName() << " used a " << Player.Inventory[0].GetItemName() << endl;
+					playerPTR->Inventory[0].UseItem();
+					playerPTR->Pokemon.Health += 5;
+					cout << playerPTR->GetName() << " used a " << playerPTR->Inventory[0].GetItemName() << endl;
 				}
-				else if (Player.Inventory[0].GetItemCount() > 0 && Player.Pokemon.Health + 5 >= Player.Pokemon.GetMaxHealth())
+				else if (playerPTR->Inventory[0].GetItemCount() > 0 && playerPTR->Pokemon.Health + 5 >= playerPTR->Pokemon.GetMaxHealth())
 				{
-					Player.Inventory[0].UseItem();
-					Player.Pokemon.Health = Player.Pokemon.GetMaxHealth();
-					cout << Player.GetName() << " used a " << Player.Inventory[0].GetItemName() << endl;
+					playerPTR->Inventory[0].UseItem();
+					playerPTR->Pokemon.Health = playerPTR->Pokemon.GetMaxHealth();
+					cout << playerPTR->GetName() << " used a " << playerPTR->Inventory[0].GetItemName() << endl;
 				}
 				else
 				{
-					cout << "You do not have any " << Player.Inventory[0].GetItemName() << "s left!" << endl;
+					cout << "You do not have any " << playerPTR->Inventory[0].GetItemName() << "s left!" << endl;
 				}
 
 				break;
 			case 2:
 				cout << "Pokeball! Go!" << endl;
-				cout << Player.GetName() << "! You can't steal another trainer's Pokemon!" << endl;
-				Player.Inventory[1].UseItem();
+				cout << playerPTR->GetName() << "! You can't steal another trainer's Pokemon!" << endl;
+				playerPTR->Inventory[1].UseItem();
 				break;
 			}
 			break;
 		}
 		//Check for player win condition
-		if (Opponent.Pokemon.Health <= 0)
+		if (opponentPTR->Pokemon.Health <= 0)
 		{
-			cout << Opponent.Pokemon.GetName() << " has fainted." << endl
-				 << "Trainer " << Player.GetName() << " defeated Trainer " << Opponent.GetName() << "!\n\n";
+			cout << opponentPTR->Pokemon.GetName() << " has fainted." << endl
+				 << "Trainer " << playerPTR->GetName() << " defeated Trainer " << opponentPTR->GetName() << "!\n\n";
 
-			cout << Opponent.GetName() << ": Whatever... My Pokemon is weak. I'm going to force it to get stronger!\n\n";
-			return true;
+			cout << opponentPTR->GetName() << ": Whatever... My Pokemon is weak. I'm going to force it to get stronger!\n\n";
+
+			system("pause");
+
+			bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
+			if (battleRecursion == true)
+			{
+				Battle(Player, Opponent);
+			}
+
+			return;
 		}
 		system("pause");
 		system("cls");
@@ -231,43 +260,77 @@ bool Battle(Trainer Player, Trainer Opponent)
 
 			if (playerchoice == 1)
 			{
-				cout << Opponent.Pokemon.GetName() << " used " << Opponent.Pokemon.Attack1.GetAttackName() << "!";
-				Player.Pokemon.Health -= Opponent.Pokemon.Attack1.calculateAttackDamage();
+				cout << opponentPTR->Pokemon.GetName() << " used " << opponentPTR->Pokemon.Attack1.GetAttackName() << "!";
+				playerPTR->Pokemon.Health -= opponentPTR->Pokemon.Attack1.calculateAttackDamage();
 			}
 			else
 			{
-				cout << Opponent.Pokemon.GetName() << " used " << Opponent.Pokemon.Attack2.GetAttackName() << "!";
-				Player.Pokemon.Health -= Opponent.Pokemon.Attack2.calculateAttackDamage();
+				cout << opponentPTR->Pokemon.GetName() << " used " << opponentPTR->Pokemon.Attack2.GetAttackName() << "!";
+				playerPTR->Pokemon.Health -= opponentPTR->Pokemon.Attack2.calculateAttackDamage();
 			}
 
 			break;
 
 		case 2:
-			if (Opponent.Inventory[0].GetItemCount() > 0 && Opponent.Pokemon.Health + 5 <= Opponent.Pokemon.GetMaxHealth())
+			if (opponentPTR->Inventory[0].GetItemCount() > 0 && opponentPTR->Pokemon.Health + 5 <= opponentPTR->Pokemon.GetMaxHealth())
 			{
-				Opponent.Pokemon.Health += 5;
-				Opponent.Inventory[0].UseItem();
-				cout << Opponent.GetName() << " used a " << Opponent.Inventory[0].GetItemName() << endl;
+				opponentPTR->Pokemon.Health += 5;
+				opponentPTR->Inventory[0].UseItem();
+				cout << opponentPTR->GetName() << " used a " << opponentPTR->Inventory[0].GetItemName() << endl;
 			}
-			else if (Opponent.Inventory[0].GetItemCount() > 0 && Opponent.Pokemon.Health + 5 >= Opponent.Pokemon.GetMaxHealth())
+			else if (opponentPTR->Inventory[0].GetItemCount() > 0 && opponentPTR->Pokemon.Health + 5 >= opponentPTR->Pokemon.GetMaxHealth())
 			{
-				Opponent.Pokemon.Health = Opponent.Pokemon.GetMaxHealth();
-				Opponent.Inventory[0].UseItem();
-				cout << Opponent.GetName() << " used a " << Opponent.Inventory[0].GetItemName() << endl;
+				opponentPTR->Pokemon.Health = opponentPTR->Pokemon.GetMaxHealth();
+				opponentPTR->Inventory[0].UseItem();
+				cout << opponentPTR->GetName() << " used a " << opponentPTR->Inventory[0].GetItemName() << endl;
 			}
 			break;
 		}
 
 		//Check for Opponent Win Condition
-		if (Player.Pokemon.Health <= 0)
+		if (playerPTR->Pokemon.Health <= 0)
 		{
-			cout << endl << Player.Pokemon.GetName() << " has fainted." << endl
-				 << Player.GetName() << " blacked out.\n\n";
-			return false;
+			cout << endl << playerPTR->Pokemon.GetName() << " has fainted." << endl
+				 << playerPTR->GetName() << " blacked out.\n\n";
+			system("pause");
+			bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
+			if ( battleRecursion == true)
+			{
+				Battle(Player, Opponent);
+			}
+
+			return;
 		}
 
 		system("pause");
 		system("cls");
 	}
+}
 
+bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR)
+{
+	system("cls");
+
+	char playerchoice = 'z';
+
+	cout << "Battle Trainer " << opponentPTR->GetName() << " again? <Y/N>";
+
+	cin.ignore();
+	cin >> playerchoice;
+	playerchoice = toupper(playerchoice);
+
+	while (playerchoice != 'Y' && playerchoice != 'N')
+	{
+		cout << "Choice must be 'Y' or 'N'" << endl;
+		cin.ignore();
+		cin >> playerchoice;
+		playerchoice = toupper(playerchoice);
+	}
+	if (playerchoice == 'Y')
+	{
+		playerPTR->Pokemon.Health = playerPTR->Pokemon.GetMaxHealth();
+		opponentPTR->Pokemon.Health = opponentPTR->Pokemon.GetMaxHealth();
+		return true;
+	}
+	return false;
 }

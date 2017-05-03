@@ -11,7 +11,7 @@ public:
 	Trainer(string _name);
 	~Trainer();
 
-	Items Inventory[2] = { Items("Potion", 3), Items("Pokeball", 5) };
+	Items Inventory[2] = { Items("Potion", 3), Items("Pokeball", 0) };
 
 	Monster Pokemon = Monster();
 
