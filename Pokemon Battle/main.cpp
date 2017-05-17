@@ -1,16 +1,18 @@
 #include <iostream>
 #include <memory>
 #include "Trainer.h"
+#include "mapmain.h"
 
 string nameValidate();
 
 void NewGame();
 void Battle(Trainer Player, Trainer Opponent);
 bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
+bool checkWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
 
 int main()
 {
-	cout << "Pokemon: CMD Version\n\n" << "Please choose an option:\n\n" << "N- New Game\n" << "L- Load Game\n" << "E- Exit";
+	cout << "Pokemon: CMD Version\n\n" << "Please choose an option:\n\n" << "N- New Game\n" << "E- Exit";
 
 	char playerChoice = 'z';
 	cin >> playerChoice;
@@ -19,7 +21,6 @@ int main()
 	switch (playerChoice)
 	{
 	case 'N': system("cls"); NewGame(); break;
-	case 'L': cout << "Implement This"; break;
 	case 'E': return 0;
 	}
 
@@ -43,7 +44,6 @@ string nameValidate()
 
 void NewGame()
 {
-	enum pokemon { Bulbasaur, Charmander, Squirtle, Pikachu, Eevee };
 	int playerchoice = 0;
 	string NameSet = "DEFAULT";
 
@@ -81,6 +81,7 @@ void NewGame()
 	system("pause");
 	system("cls");
 
+	enum pokemon { Bulbasaur, Charmander, Squirtle, Pikachu, Eevee };
 	cout << Player.GetName() << ", choose a Pokemon:" << endl
 		 << "(1) Bulbasaur - Grass Type"              << endl
 		 << "(2) Charmander - Fire Type"              << endl
@@ -100,7 +101,6 @@ void NewGame()
 		Player.Pokemon.SetIDNum(Squirtle);
 		Opponent.Pokemon.SetIDNum(Bulbasaur);
 		break;
-
 	default:
 		Player.Pokemon.SetIDNum(Pikachu);
 		Opponent.Pokemon.SetIDNum(Eevee);
@@ -133,6 +133,7 @@ void Battle(Trainer Player, Trainer Opponent)
 	int playerchoice;
 	auto playerPTR = make_shared<Trainer>(Player);
 	auto opponentPTR = make_shared<Trainer>(Opponent);
+	bool check = false;
 
 	srand(time(NULL));
 
@@ -190,14 +191,14 @@ void Battle(Trainer Player, Trainer Opponent)
 			break;
 
 		case 2:
-			int counter = 1;
+			int itemNumber = 1;
 			for (int i = 0; i < sizeof(playerPTR->Inventory)/sizeof(*playerPTR->Inventory); i++)
 			{
-				if (playerPTR->Inventory[i].GetItemCount() > 0)
+				if (playerPTR->Inventory[i].GetItemCount() >= 0)
 				{
-					cout << "(" << counter << ") " << playerPTR->Inventory[i].GetItemName()
+					cout << "(" << itemNumber << ") " << playerPTR->Inventory[i].GetItemName()
 						 << " x" << playerPTR->Inventory[i].GetItemCount() << endl;
-					counter++;
+					itemNumber++;
 				}
 			}
 			cin >> playerchoice;
@@ -231,23 +232,12 @@ void Battle(Trainer Player, Trainer Opponent)
 			break;
 		}
 		//Check for player win condition
-		if (opponentPTR->Pokemon.Health <= 0)
+		check = checkWinCondition(playerPTR, opponentPTR);
+		if (check == true)
 		{
-			cout << opponentPTR->Pokemon.GetName() << " has fainted." << endl
-				 << "Trainer " << playerPTR->GetName() << " defeated Trainer " << opponentPTR->GetName() << "!\n\n";
-
-			cout << opponentPTR->GetName() << ": Whatever... My Pokemon is weak. I'm going to force it to get stronger!\n\n";
-
-			system("pause");
-
-			bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
-			if (battleRecursion == true)
-			{
-				Battle(Player, Opponent);
-			}
-
 			return;
 		}
+
 		system("pause");
 		system("cls");
 
@@ -288,17 +278,9 @@ void Battle(Trainer Player, Trainer Opponent)
 		}
 
 		//Check for Opponent Win Condition
-		if (playerPTR->Pokemon.Health <= 0)
+		check = checkWinCondition(playerPTR, opponentPTR);
+		if (check == true)
 		{
-			cout << endl << playerPTR->Pokemon.GetName() << " has fainted." << endl
-				 << playerPTR->GetName() << " blacked out.\n\n";
-			system("pause");
-			bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
-			if ( battleRecursion == true)
-			{
-				Battle(Player, Opponent);
-			}
-
 			return;
 		}
 
@@ -330,6 +312,42 @@ bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> op
 	{
 		playerPTR->Pokemon.Health = playerPTR->Pokemon.GetMaxHealth();
 		opponentPTR->Pokemon.Health = opponentPTR->Pokemon.GetMaxHealth();
+		return true;
+	}
+	return false;
+}
+
+bool checkWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR)
+{
+
+	if (opponentPTR->Pokemon.Health <= 0)
+	{
+		cout << opponentPTR->Pokemon.GetName() << " has fainted." << endl
+			<< "Trainer " << playerPTR->GetName() << " defeated Trainer " << opponentPTR->GetName() << "!\n\n";
+
+		cout << opponentPTR->GetName() << ": Whatever... My Pokemon is weak. I'm going to force it to get stronger!\n\n";
+
+		system("pause");
+
+		bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
+		if (battleRecursion == true)
+		{
+			Battle(*playerPTR, *opponentPTR);
+		}
+		return true;
+	}
+	else if (playerPTR->Pokemon.Health <= 0)
+	{
+		cout << endl << playerPTR->Pokemon.GetName() << " has fainted." << endl
+			<< playerPTR->GetName() << " blacked out.\n\n";
+
+		system("pause");
+
+		bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
+		if (battleRecursion == true)
+		{
+			Battle(*playerPTR, *opponentPTR);
+		}
 		return true;
 	}
 	return false;

@@ -148,13 +148,19 @@
   <ItemGroup>
     <ClCompile Include="Attacks.cpp" />
     <ClCompile Include="Items.cpp" />
+    <ClCompile Include="Location.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="mapmain.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Trainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attacks.h" />
     <ClInclude Include="Items.h" />
+    <ClInclude Include="Location.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="mapmain.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Trainer.h" />
   </ItemGroup>

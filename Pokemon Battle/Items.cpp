@@ -13,7 +13,10 @@ Items::~Items()
 
 void Items::UseItem()
 {
-	ItemCount--;
+	if (ItemCount > 0)
+	{
+		ItemCount--;
+	}
 }
 
 string Items::GetItemName()

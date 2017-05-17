@@ -13,36 +13,66 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Trainer Files">
+      <UniqueIdentifier>{14df2ff5-e233-481f-b826-1af2567ba698}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Trainer Files">
+      <UniqueIdentifier>{a1bf5351-92f2-4a82-b5f1-19c92e6fd845}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Map Files">
+      <UniqueIdentifier>{bc5355e1-689d-4112-b09b-246adc7e63e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Map Files">
+      <UniqueIdentifier>{1d01810d-0c75-4cea-8e95-c132e3a4fb25}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Trainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Monster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Attacks.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Trainer Files</Filter>
     </ClCompile>
     <ClCompile Include="Items.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Trainer Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Monster.cpp">
+      <Filter>Source Files\Trainer Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trainer.cpp">
+      <Filter>Source Files\Trainer Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Location.cpp">
+      <Filter>Source Files\Map Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Source Files\Map Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mapmain.cpp">
+      <Filter>Source Files\Map Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Trainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Monster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Attacks.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Trainer Files</Filter>
     </ClInclude>
     <ClInclude Include="Items.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Trainer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Monster.h">
+      <Filter>Header Files\Trainer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trainer.h">
+      <Filter>Header Files\Trainer Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Location.h">
+      <Filter>Header Files\Map Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Header Files\Map Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mapmain.h">
+      <Filter>Header Files\Map Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@ class Trainer
 {
 private:
 	string _name;
-
+	int _money = 0;
 public:
 	Trainer(string _name);
 	~Trainer();
