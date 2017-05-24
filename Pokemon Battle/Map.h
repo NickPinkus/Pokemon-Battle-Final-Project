@@ -9,7 +9,6 @@ class Map
 {
 private:
 	stack<Location *> _locationsVisited;
-	queue<Location *> _HowDidIGetHere;
 	
 	unordered_map<string, Location *> _mapLookup;
 	Location * HomePointer = nullptr;
@@ -23,6 +22,5 @@ public:
 	void Move(Location *newLocation);
 	Location * LookupLocationOnMap(int x, int y);
 	void AddToMap(string, Location *);
-	string HowDidIGetHere();
 };
 

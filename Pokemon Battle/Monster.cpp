@@ -43,6 +43,20 @@ void Monster::SetInfo()
 		Attack1 = Attacks("Tackle", 3);
 		Attack2 = Attacks("Quick Attack", 5);
 	}
+	else if (monsterID == 5)
+	{
+		_name = "Pidgey";
+		Health = 8;
+		Attack1 = Attacks("Gust", 3);
+		Attack2 = Attacks("Wing Attack", 7);
+	}
+	else if (monsterID == 6)
+	{
+		_name = "Meowth";
+		Health = 10;
+		Attack1 = Attacks("Fury Swipes", 1, 3);
+		Attack2 = Attacks("Payday", 5);
+	}
 	else
 	{
 		_name = "DEFAULT";

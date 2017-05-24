@@ -8,10 +8,11 @@ string nameValidate();
 void NewGame();
 void Battle(Trainer Player, Trainer Opponent);
 bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
-bool checkWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
+bool CheckWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
 
 int main()
 {
+	MapMovement();
 	cout << "Pokemon: CMD Version\n\n" << "Please choose an option:\n\n" << "N- New Game\n" << "E- Exit";
 
 	char playerChoice = 'z';
@@ -25,6 +26,8 @@ int main()
 	}
 
 	system("pause");
+
+
 
 	return 0;
 }
@@ -232,7 +235,7 @@ void Battle(Trainer Player, Trainer Opponent)
 			break;
 		}
 		//Check for player win condition
-		check = checkWinCondition(playerPTR, opponentPTR);
+		check = CheckWinCondition(playerPTR, opponentPTR);
 		if (check == true)
 		{
 			return;
@@ -278,7 +281,7 @@ void Battle(Trainer Player, Trainer Opponent)
 		}
 
 		//Check for Opponent Win Condition
-		check = checkWinCondition(playerPTR, opponentPTR);
+		check = CheckWinCondition(playerPTR, opponentPTR);
 		if (check == true)
 		{
 			return;
@@ -317,7 +320,7 @@ bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> op
 	return false;
 }
 
-bool checkWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR)
+bool CheckWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR)
 {
 
 	if (opponentPTR->Pokemon.Health <= 0)

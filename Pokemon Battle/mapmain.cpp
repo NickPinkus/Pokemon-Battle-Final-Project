@@ -3,9 +3,10 @@
 #include "mapmain.h"
 using namespace std;
 
-int mapMovement()
+int MapMovement()
 {
-	auto map = Map("Home");
+	auto map = Map("Pallet Town");
+	int routeNumber = 1;
 	int choice = -1;
 	while (choice != 0) 
 	{
@@ -15,21 +16,17 @@ int mapMovement()
 		cout << "3) Go East" << endl;
 		cout << "4) Go South" << endl;
 		cout << "5) Go West" << endl;
-		cout << "6) Where have I been?" << endl;
-		cout << "7) How did I get here?" << endl;
-		cout << "0) Exit" << endl;
+		cout << "6) Return to Pallet Town" << endl;
 		cin >> choice;
 
 		switch (choice) 
 		{
 		case 1: cout << "Current Location: " << map.CurrentLocation->DisplayLocationInfo(); break;
-		case 2: GoNorth(map); break;
+		case 2: GoNorth(map, routeNumber); break;
 		case 3: GoEast(map); break;
 		case 4: GoSouth(map); break;
 		case 5: GoWest(map); break;
 		case 6: system("cls"); cout << map.GetPathBackToHome() << endl; break;
-		case 7: system("cls"); cout << map.HowDidIGetHere() << endl; break;
-		case 0: break;
 		default: cout << "Enter a valid option"; break;
 		}
 		system("pause");
@@ -38,7 +35,7 @@ int mapMovement()
 	return 0;
 }
 
-void GoNorth(Map &map)
+void GoNorth(Map &map, int &routeNumber)
 {
 	auto newLocation = map.CurrentLocation->North;
 	int currentX = map.CurrentLocation->getXCoord();
@@ -52,18 +49,15 @@ void GoNorth(Map &map)
 
 		if (existing == nullptr)
 		{
-			cout << "You haven't been here before! Enter a name for this place: ";
-			string newName;
-			cin.ignore();
-			getline(cin, newName);
-			newLocation = new Location(newName, newX, newY);
-			cout << "This place is now called: " + newName << endl;
+			cout << "You've discovered Route " << routeNumber << endl;
+			newLocation = new Location("Route " + to_string(routeNumber), newX, newY);
+			routeNumber++;
 			map.AddToMap("(" + to_string(newX) + "," + to_string(newY) + ")", newLocation);
 			map.Move(newLocation);
 		}
 		else
 		{
-			cout << "You've been here before. " << existing->DisplayLocationInfo();
+			cout << "Now entering Route " << routeNumber<< existing->DisplayLocationInfo();
 			map.CurrentLocation->North = existing;
 			existing->South = map.CurrentLocation;
 			map.Move(existing);

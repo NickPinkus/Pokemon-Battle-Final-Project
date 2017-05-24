@@ -8,6 +8,10 @@ Attacks::Attacks(string attackName, int attackDamage) : atkName(attackName), att
 {
 }
 
+Attacks::Attacks(string attackName, int attackDamage, int attackRounds) : atkName(attackName), attack(attackDamage), attackRounds(attackRounds)
+{
+}
+
 
 Attacks::~Attacks()
 {
@@ -28,6 +32,16 @@ int Attacks::calculateAttackDamage()
 	default:
 		cout << "\n\nThe attack hit!\n\n";
 		return attack;
+	}
+
+	if (attackRounds > 1)
+	{
+		if (rand() % 5 == 0)
+		{
+			attackRounds++;
+		}
+		attackRounds--;
+		calculateAttackDamage();
 	}
 }
 
