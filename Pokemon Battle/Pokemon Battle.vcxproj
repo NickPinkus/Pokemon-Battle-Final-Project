@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Attacks.cpp" />
+    <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Items.cpp" />
     <ClCompile Include="Location.cpp" />
     <ClCompile Include="main.cpp" />
@@ -157,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attacks.h" />
+    <ClInclude Include="Battle.h" />
     <ClInclude Include="Items.h" />
     <ClInclude Include="Location.h" />
     <ClInclude Include="Map.h" />

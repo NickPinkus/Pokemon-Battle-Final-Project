@@ -13,7 +13,7 @@ Location::~Location()
 
 string Location::DisplayLocationInfo()
 {
-	return _name + " (" + to_string(_xCoord) + "," + to_string(_yCoord) + ")" + "\n";
+	return _name;
 }
 
 string Location::getNewCoordinates(int x, int y)

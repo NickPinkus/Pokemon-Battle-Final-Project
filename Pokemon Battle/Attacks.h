@@ -17,5 +17,6 @@ public:
 
 	int calculateAttackDamage();
 	string GetAttackName();
+	void RestoreFurySwipes();
 };
 

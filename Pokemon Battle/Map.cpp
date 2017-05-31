@@ -40,7 +40,7 @@ string Map::GetPathBackToHome()
 
 	while (_locationsVisited.size() != 0)
 	{
-		result += _locationsVisited.top()->DisplayLocationInfo();
+		result += _locationsVisited.top()->DisplayLocationInfo() + "/n";
 		_locationsVisited.pop();
 	}
 

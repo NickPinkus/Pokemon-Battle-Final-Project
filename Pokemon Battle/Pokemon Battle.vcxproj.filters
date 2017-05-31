@@ -25,6 +25,12 @@
     <Filter Include="Header Files\Map Files">
       <UniqueIdentifier>{1d01810d-0c75-4cea-8e95-c132e3a4fb25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Battle Files">
+      <UniqueIdentifier>{a1edd477-5406-499f-ba44-aea34785379f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Battle Files">
+      <UniqueIdentifier>{37ac5986-1298-4278-b4b2-ce0e51ea53fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -51,6 +57,9 @@
     <ClCompile Include="mapmain.cpp">
       <Filter>Source Files\Map Files</Filter>
     </ClCompile>
+    <ClCompile Include="Battle.cpp">
+      <Filter>Source Files\Battle Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attacks.h">
@@ -73,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="mapmain.h">
       <Filter>Header Files\Map Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Battle.h">
+      <Filter>Header Files\Battle Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

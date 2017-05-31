@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "mapmain.h"
+#include <ctime>
 using namespace std;
 
 int MapMovement()
@@ -11,23 +12,24 @@ int MapMovement()
 	while (choice != 0) 
 	{
 		system("cls");
-		cout << "1) Display Current Location" << endl;
-		cout << "2) Go North" << endl;
-		cout << "3) Go East" << endl;
-		cout << "4) Go South" << endl;
-		cout << "5) Go West" << endl;
-		cout << "6) Return to Pallet Town" << endl;
+		cout << map.CurrentLocation->DisplayLocationInfo()	<< endl;
+		cout << "1) Go North"								<< endl;
+		cout << "2) Go East"								<< endl;
+		cout << "3) Go South"								<< endl;
+		cout << "4) Go West"								<< endl;
+		cout << "5) Search Tall Grass for Pokemon"			<< endl;
+		cout << "6) Return to Pallet Town"					<< endl;
 		cin >> choice;
 
 		switch (choice) 
 		{
-		case 1: cout << "Current Location: " << map.CurrentLocation->DisplayLocationInfo(); break;
-		case 2: GoNorth(map, routeNumber); break;
-		case 3: GoEast(map); break;
-		case 4: GoSouth(map); break;
-		case 5: GoWest(map); break;
+		case 1: GoNorth(map, routeNumber); break;
+		case 2: GoEast(map, routeNumber); break;
+		case 3: GoSouth(map, routeNumber); break;
+		case 4: GoWest(map, routeNumber); break;
+		case 5: system("cls"); cout << "Implement this" << endl; break;
 		case 6: system("cls"); cout << map.GetPathBackToHome() << endl; break;
-		default: cout << "Enter a valid option"; break;
+		default: cout << "Enter a valid option" << endl; break;
 		}
 		system("pause");
 	}
@@ -57,7 +59,7 @@ void GoNorth(Map &map, int &routeNumber)
 		}
 		else
 		{
-			cout << "Now entering Route " << routeNumber<< existing->DisplayLocationInfo();
+			cout << "Now entering "<< existing->DisplayLocationInfo() << endl;
 			map.CurrentLocation->North = existing;
 			existing->South = map.CurrentLocation;
 			map.Move(existing);
@@ -67,7 +69,7 @@ void GoNorth(Map &map, int &routeNumber)
 	else
 	{
 		system("cls");
-		cout << "You travel to: " + newLocation->DisplayLocationInfo();
+		cout << "You travel to: " + newLocation->DisplayLocationInfo() << endl;
 		newLocation->South = map.CurrentLocation;
 		map.Move(newLocation);
 	}
@@ -75,7 +77,7 @@ void GoNorth(Map &map, int &routeNumber)
 	return;
 }
 
-void GoEast(Map &map)
+void GoEast(Map &map, int &routeNumber)
 {
 	auto newLocation = map.CurrentLocation->East;
 	int currentX = map.CurrentLocation->getXCoord();
@@ -89,28 +91,26 @@ void GoEast(Map &map)
 
 		if (existing == nullptr)
 		{
-			cout << "You haven't been here before! Enter a name for this place: ";
-			string newName;
-			cin.ignore();
-			getline(cin, newName);
-			newLocation = new Location(newName, newX, newY);
-			cout << "This place is now called: " + newName << endl;
+			cout << "You've discovered Route " << routeNumber << endl;
+			newLocation = new Location("Route " + to_string(routeNumber), newX, newY);
+			routeNumber++;
 			map.AddToMap("(" + to_string(newX) + "," + to_string(newY) + ")", newLocation);
 			map.Move(newLocation);
 		}
 		else
 		{
-			cout << "You've been here before. " << existing->DisplayLocationInfo();
+			cout << "Now entering "<< existing->DisplayLocationInfo() << endl;
 			map.CurrentLocation->East = existing;
 			existing->West = map.CurrentLocation;
 			map.Move(existing);
+
 
 		}
 	}
 	else
 	{
 		system("cls");
-		cout << "You travel to: " + newLocation->DisplayLocationInfo();
+		cout << "You travel to: " + newLocation->DisplayLocationInfo() << endl;
 		newLocation->West = map.CurrentLocation;
 		map.Move(newLocation);
 	}
@@ -118,7 +118,7 @@ void GoEast(Map &map)
 	return;
 }
 
-void GoSouth(Map &map)
+void GoSouth(Map &map, int &routeNumber)
 {
 	auto newLocation = map.CurrentLocation->South;
 	int currentX = map.CurrentLocation->getXCoord();
@@ -132,18 +132,16 @@ void GoSouth(Map &map)
 
 		if (existing == nullptr)
 		{
-			cout << "You haven't been here before! Enter a name for this place: ";
-			string newName;
-			cin.ignore();
-			getline(cin, newName);
-			newLocation = new Location(newName, newX, newY);
-			cout << "This place is now called: " + newName << endl;
+			cout << "You've discovered Route " << routeNumber << endl;
+			newLocation = new Location("Route " + to_string(routeNumber), newX, newY);
+			routeNumber++;
 			map.AddToMap("(" + to_string(newX) + "," + to_string(newY) + ")", newLocation);
 			map.Move(newLocation);
 		}
 		else
 		{
-			cout << "You've been here before. " << existing->DisplayLocationInfo();
+
+			cout << "Now entering "<< existing->DisplayLocationInfo() << endl;
 			map.CurrentLocation->South = existing;
 			existing->North = map.CurrentLocation;
 			map.Move(existing);
@@ -153,7 +151,7 @@ void GoSouth(Map &map)
 	else
 	{
 		system("cls");
-		cout << "You travel to: " + newLocation->DisplayLocationInfo();
+		cout << "You travel to: " + newLocation->DisplayLocationInfo() << endl;
 		newLocation->North = map.CurrentLocation;
 		map.Move(newLocation);
 
@@ -162,7 +160,7 @@ void GoSouth(Map &map)
 	return;
 }
 
-void GoWest(Map &map)
+void GoWest(Map &map, int &routeNumber)
 {
 	auto newLocation = map.CurrentLocation->West;
 	int currentX = map.CurrentLocation->getXCoord();
@@ -176,18 +174,15 @@ void GoWest(Map &map)
 
 		if (existing == nullptr)
 		{
-			cout << "You haven't been here before! Enter a name for this place: ";
-			string newName;
-			cin.ignore();
-			getline(cin, newName);
-			newLocation = new Location(newName, newX, newY);
-			cout << "This place is now called: " + newName << endl;
+			cout << "You've discovered Route " << routeNumber << endl;
+			newLocation = new Location("Route " + to_string(routeNumber), newX, newY);
+			routeNumber++;
 			map.AddToMap("(" + to_string(newX) + "," + to_string(newY) + ")", newLocation);
 			map.Move(newLocation);
 		}
 		else
 		{
-			cout << "You've been here before. " << existing->DisplayLocationInfo();
+			cout << "Now entering "<< existing->DisplayLocationInfo() << endl;
 			map.CurrentLocation->West = existing;
 			existing->East = map.CurrentLocation;
 			map.Move(existing);
@@ -197,10 +192,32 @@ void GoWest(Map &map)
 	else
 	{
 		system("cls");
-		cout << "You travel to: " + newLocation->DisplayLocationInfo();
+		cout << "You travel to: " + newLocation->DisplayLocationInfo() << endl;
 		newLocation->East = map.CurrentLocation;
 		map.Move(newLocation);
 	}
 
 	return;
+}
+
+void SearchTallGrass()
+{
+	cout << "You approach the nearest patch of tall grass..." << endl;
+
+	system("pause");
+	system("cls");
+
+	srand(time(NULL));
+
+	/*bool pokemonAppears = rand() % 2;
+
+
+	if (pokemonAppears = true)
+	{
+		cout << "A wild " << pokemonName << " appeared!";
+	}
+	else
+	{
+		cout << "But nothing happened..." << endl;
+	}*/
 }
