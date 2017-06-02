@@ -7,9 +7,9 @@
 string nameValidate();
 
 void NewGame();
-void Battle(Trainer Player, Trainer Opponent);
-bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
-bool CheckWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR);
+void Battle(Trainer * Player, Trainer * Opponent);
+bool BattleRecursionPrompt(Trainer * playerPTR, Trainer * opponentPTR);
+bool CheckWinCondition(Trainer * playerPTR, Trainer * opponentPTR);
 
 int main()
 {
@@ -58,34 +58,34 @@ void NewGame()
 	cin.ignore();
 	NameSet = nameValidate();
 
-	Trainer Player = Trainer(NameSet);
+	Trainer * Player = new Trainer(NameSet);
 
-	cout << "\nOak: " << Player.GetName() << ", huh? That's a cool name!\n\n";
+	cout << "\nOak: " << Player->GetName() << ", huh? That's a cool name!\n\n";
 	system("pause");
 	system("cls");
 	cout << "Oak: Ah! I see you came here with my grandson! What was his name again?\n\n"
 		 << "Name: ";
 
 	NameSet = nameValidate();
-	Trainer Opponent = Trainer(NameSet);
+	Trainer * Opponent = new Trainer(NameSet);
 
-	cout << "Oak: Oh, that's right! His name is " << Opponent.GetName() << "!\n\n";
+	cout << "Oak: Oh, that's right! His name is " << Opponent->GetName() << "!\n\n";
 
 	system("pause");
 	system("cls");
 
-	cout << "Oak: " << Player.GetName() << "! I have three Pokemon here!" << endl
+	cout << "Oak: " << Player->GetName() << "! I have three Pokemon here!" << endl
 		 << "You can choose one as your companion!\n\n";
 	getchar();
-	cout << Opponent.GetName() << ": Gramps, what about me?" << endl;
+	cout << Opponent->GetName() << ": Gramps, what about me?" << endl;
 	getchar();
-	cout << "\nOak: " << Opponent.GetName() << "! I forgot you were coming! You can pick one too!\n\n";
+	cout << "\nOak: " << Opponent->GetName() << "! I forgot you were coming! You can pick one too!\n\n";
 
 	system("pause");
 	system("cls");
 
 	enum pokemon { Bulbasaur, Charmander, Squirtle, Pikachu, Eevee, Pidgey, Meowth};
-	cout << Player.GetName() << ", choose a Pokemon:" << endl
+	cout << Player->GetName() << ", choose a Pokemon:" << endl
 		 << "(1) Bulbasaur - Grass Type"              << endl
 		 << "(2) Charmander - Fire Type"              << endl
 		 << "(3) Squirtle - Water Type"               << endl
@@ -102,37 +102,39 @@ void NewGame()
 	switch (playerchoice)
 	{
 	case 1:
-		Player.Pokemon.SetIDNum(Bulbasaur);
-		Opponent.Pokemon.SetIDNum(Charmander);
+		Player->Pokemon.SetIDNum(Bulbasaur);
+		Opponent->Pokemon.SetIDNum(Charmander);
 		break;
 	case 2:
-		Player.Pokemon.SetIDNum(Charmander);
-		Opponent.Pokemon.SetIDNum(Squirtle);
+		Player->Pokemon.SetIDNum(Charmander);
+		Opponent->Pokemon.SetIDNum(Squirtle);
 		break;
 	case 3:
-		Player.Pokemon.SetIDNum(Squirtle);
-		Opponent.Pokemon.SetIDNum(Bulbasaur);
+		Player->Pokemon.SetIDNum(Squirtle);
+		Opponent->Pokemon.SetIDNum(Bulbasaur);
 		break;
 	case 4:
-		Player.Pokemon.SetIDNum(Pikachu);
-		Opponent.Pokemon.SetIDNum(Eevee);
+		Player->Pokemon.SetIDNum(Pikachu);
+		Opponent->Pokemon.SetIDNum(Eevee);
+		break;
 	case 5:
-		Player.Pokemon.SetIDNum(Meowth);
-		Opponent.Pokemon.SetIDNum(Pidgey);
+		Player->Pokemon.SetIDNum(Meowth);
+		Opponent->Pokemon.SetIDNum(Pidgey);
+		break;
 	}
 
-	Player.Pokemon.SetInfo();
-	Opponent.Pokemon.SetInfo();
+	Player->Pokemon.SetInfo();
+	Opponent->Pokemon.SetInfo();
 
 
-	cout << "\n\n" << Player.GetName() << " chose " << Player.Pokemon.GetName() << "!" << endl;
-	cout << "\n\n" << Opponent.GetName() << ": Then I'll choose this one!\n\n";
-	cout << Opponent.GetName() << " chose " << Opponent.Pokemon.GetName() << "!\n\n";
+	cout << "\n\n" << Player->GetName() << " chose " << Player->Pokemon.GetName() << "!" << endl;
+	cout << "\n\n" << Opponent->GetName() << ": Then I'll choose this one!\n\n";
+	cout << Opponent->GetName() << " chose " << Opponent->Pokemon.GetName() << "!\n\n";
 	
 	system("pause");
 	system("cls");
 
-	cout << Opponent.GetName() << ": Hey, " << Player.GetName() << "! Let's have a Pokemon battle!" << endl;
+	cout << Opponent->GetName() << ": Hey, " << Player->GetName() << "! Let's have a Pokemon battle!" << endl;
 
 	getchar();
 
@@ -142,25 +144,25 @@ void NewGame()
 	cout << "Oak: Well done, you two! Now get out there and catch some more Pokemon!" << endl;
 	system("pause");
 	system("cls");
-	MapMovement();
+	MapMovement(*Player);
 
 	
 }
 
-void Battle(Trainer Player, Trainer Opponent)
+void Battle(Trainer * playerPTR, Trainer * opponentPTR)
 {
 	int playerchoice;
-	auto playerPTR = make_shared<Trainer>(Player);
-	auto opponentPTR = make_shared<Trainer>(Opponent);
+//	auto playerPTR = make_shared<Trainer>(Player);
+//	auto opponentPTR = make_shared<Trainer>(Opponent);
 	bool check = false;
 
 	srand(time(NULL));
 
 	cin.ignore();
 
-	cout << "Trainer " << opponentPTR->GetName() << " challenges Trainer " << Player.GetName() << " to a battle!\n\n";
+	cout << "Trainer " << opponentPTR->GetName() << " challenges Trainer " << playerPTR->GetName() << " to a battle!\n\n";
 	getchar();
-	cout << "Trainer " << opponentPTR->GetName() << " sends out " << Opponent.Pokemon.GetName() << "!" << endl;
+	cout << "Trainer " << opponentPTR->GetName() << " sends out " << opponentPTR->Pokemon.GetName() << "!" << endl;
 
 	getchar();
 
@@ -264,9 +266,6 @@ void Battle(Trainer Player, Trainer Opponent)
 			return;
 		}
 
-		system("pause");
-		system("cls");
-
 		//Opponent's Turn
 		playerchoice = rand() % 5;
 		switch (playerchoice)
@@ -313,14 +312,10 @@ void Battle(Trainer Player, Trainer Opponent)
 		{
 			return;
 		}
-
-
-		system("pause");
-		system("cls");
 	}
 }
 
-bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR)
+bool BattleRecursionPrompt(Trainer * playerPTR, Trainer * opponentPTR)
 {
 	system("cls");
 
@@ -348,7 +343,7 @@ bool BattleRecursionPrompt(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> op
 	return false;
 }
 
-bool CheckWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> opponentPTR)
+bool CheckWinCondition(Trainer * playerPTR, Trainer * opponentPTR)
 {
 	system("pause");
 	system("cls");
@@ -365,7 +360,7 @@ bool CheckWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> oppone
 		bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
 		if (battleRecursion == true)
 		{
-			Battle(*playerPTR, *opponentPTR);
+			Battle(playerPTR, opponentPTR);
 		}
 		return true;
 	}
@@ -379,7 +374,7 @@ bool CheckWinCondition(shared_ptr<Trainer> playerPTR, shared_ptr<Trainer> oppone
 		bool battleRecursion = BattleRecursionPrompt(playerPTR, opponentPTR);
 		if (battleRecursion == true)
 		{
-			Battle(*playerPTR, *opponentPTR);
+			Battle(playerPTR, opponentPTR);
 		}
 		return true;
 	}

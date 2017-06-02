@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
 #include "mapmain.h"
+#include "Battle.h"
+#include "Trainer.h"
 #include <ctime>
 using namespace std;
 
-int MapMovement()
+void MapMovement(Trainer Player)
 {
 	auto map = Map("Pallet Town");
 	int routeNumber = 1;
@@ -27,14 +29,14 @@ int MapMovement()
 		case 2: GoEast(map, routeNumber); break;
 		case 3: GoSouth(map, routeNumber); break;
 		case 4: GoWest(map, routeNumber); break;
-		case 5: system("cls"); cout << "Implement this" << endl; break;
+		case 5: system("cls"); WildEncounter(Player); break;
 		case 6: system("cls"); cout << map.GetPathBackToHome() << endl; break;
 		default: cout << "Enter a valid option" << endl; break;
 		}
 		system("pause");
 	}
 	
-	return 0;
+	return;
 }
 
 void GoNorth(Map &map, int &routeNumber)
