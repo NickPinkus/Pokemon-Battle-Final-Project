@@ -155,6 +155,7 @@
     <ClCompile Include="mapmain.cpp" />
     <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Trainer.cpp" />
+    <ClCompile Include="WildPkmn.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attacks.h" />
@@ -165,6 +166,7 @@
     <ClInclude Include="mapmain.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Trainer.h" />
+    <ClInclude Include="WildPkmn.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

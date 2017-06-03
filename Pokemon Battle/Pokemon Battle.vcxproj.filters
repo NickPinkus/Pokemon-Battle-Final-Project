@@ -60,6 +60,9 @@
     <ClCompile Include="Battle.cpp">
       <Filter>Source Files\Battle Files</Filter>
     </ClCompile>
+    <ClCompile Include="WildPkmn.cpp">
+      <Filter>Source Files\Battle Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Attacks.h">
@@ -84,6 +87,9 @@
       <Filter>Header Files\Map Files</Filter>
     </ClInclude>
     <ClInclude Include="Battle.h">
+      <Filter>Header Files\Battle Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WildPkmn.h">
       <Filter>Header Files\Battle Files</Filter>
     </ClInclude>
   </ItemGroup>

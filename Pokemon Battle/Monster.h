@@ -3,7 +3,7 @@
 
 class Monster
 {
-private:
+protected:
 	string _name;
 	int maxHealth,
 		monsterID;

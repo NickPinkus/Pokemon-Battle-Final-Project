@@ -1,21 +1,21 @@
 #pragma once
 #include "Battle.h"
 #include "Trainer.h"
+#include "WildPkmn.h"
 
 void WildEncounter(Trainer Player)
 {
-	WildPokemon monster;
 	string playerMonster;
 	char input;
 	bool didCatch;
 	int pokeballs = 5;
 
-	monster = setMonster();
-	didCatch = captureAttempt(monster.combatPower);
+	WildPkmn monster = WildPkmn(randomNameGenerator());
+	didCatch = captureAttempt(monster.GetCombatPower());
 
 
 	cout << "!" << endl;
-	cout << "A wild " << monster.name << " appeared!" << endl;
+	cout << "A wild " << monster.GetName() << " appeared!" << endl;
 	cout << "Battle it? <Y/N>" << endl;
 	cin >> input;
 	input = tolower(input);
@@ -24,11 +24,10 @@ void WildEncounter(Trainer Player)
 	{
 		playerMonster = Player.Pokemon.GetName();
 		cout << endl << "Go! " << playerMonster << "!\n\n";
-		cout << "Opponent:" << endl;
-		printMonster(monster);
+		cout << "Opponent:\n" << monster.GetName() << endl;
 		cout << "Player:\n" << playerMonster << "\n\n";
-		cout << playerMonster << " attacked " << monster.name << "! It is critically weakened!\n\n";
-		cout << "You have " << pokeballs << " Pokeballs. Do you want to attempt to capture " << monster.name << "? <Y/N>" << endl;
+		cout << playerMonster << " attacked " << monster.GetName() << "! It is critically weakened!\n\n";
+		cout << "You have " << pokeballs << " Pokeballs. Do you want to attempt to capture " << monster.GetName() << "? <Y/N>" << endl;
 		cin >> input;
 		input = tolower(input);
 
@@ -38,25 +37,25 @@ void WildEncounter(Trainer Player)
 			if (input == 'y')
 			{
 				pokeballs--;
-				cout << endl << "Threw a pokeball at " << monster.name << "! It shook once... twice..." << endl;
+				cout << endl << "Threw a pokeball at " << monster.GetName() << "! It shook once... twice..." << endl;
 				if (didCatch)
 				{
-					cout << "\nYES! " << monster.name << " was caught!" << endl;
-					cout << "Added " << monster.name << " to the Pokedex!" << endl;
-					cout << monster.name << " was sent to Bill's PC!\n\n";
+					cout << "\nYES! " << monster.GetName() << " was caught!" << endl;
+					cout << "Added " << monster.GetName() << " to the Pokedex!" << endl;
+					cout << monster.GetName() << " was sent to Bill's PC!\n\n";
 
 					return;
 				}
 				else
 				{
-					cout << "Darn! " << monster.name << " broke free! It was so close!" << endl;
+					cout << "Darn! " << monster.GetName() << " broke free! It was so close!" << endl;
 					cout << "You have " << pokeballs << " Pokeballs left." << endl;
 					if (pokeballs > 0)
 					{
 						cout << endl << "Throw another Pokeball? <Y/N>" << endl;
 						cin >> input;
 						input = tolower(input);
-						didCatch = captureAttempt(monster.combatPower);
+						didCatch = captureAttempt(monster.GetCombatPower());
 					}
 				}
 			}
@@ -96,15 +95,6 @@ bool captureAttempt(int combatPower)
 	return false;
 }
 
-WildPokemon setMonster()
-{
-	WildPokemon x;
-	x.name = randomNameGenerator();
-	x.combatPower = rand() % 25;
-
-	return x;
-}
-
 string randomNameGenerator()
 {
 	srand(time(NULL));
@@ -124,9 +114,4 @@ string randomNameGenerator()
 	monsterName = names[rand() % 26];
 
 	return monsterName;
-}
-
-void printMonster(WildPokemon monster)
-{
-	cout << monster.name << "\n\n";
 }
