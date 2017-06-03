@@ -1,6 +1,5 @@
 #pragma once
 #include <stack>
-#include <queue>
 #include "Location.h"
 #include <unordered_map>
 using namespace std;
@@ -9,7 +8,6 @@ class Map
 {
 private:
 	stack<Location *> _locationsVisited;
-	
 	unordered_map<string, Location *> _mapLookup;
 	Location * HomePointer = nullptr;
 	
